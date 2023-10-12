@@ -14,10 +14,9 @@ namespace budhtechjobapp.Models
         public string? UserName { get; set; }
         [Required]
         public string? Password { get; set; } = null;
-        [Required]
-        public string? ConformPassword { get; set; }
-        [Required]
+        
         public string? Role { get; set; }
+        
     }
 
     public class SignupResponse

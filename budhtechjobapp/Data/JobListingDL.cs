@@ -35,7 +35,6 @@ namespace budhtechjobapp.Data
         {
             try
             {
-                // 1. Validate the input data (you can use data annotations or FluentValidation)
                 if (!IsValid(request))
                 {
                     return new ResponseDto
@@ -45,14 +44,13 @@ namespace budhtechjobapp.Data
                     };
                 }
 
-                // 2. Create a new JobListingRequest entity and populate it
                 var newJobListing = new JobListingRequest
                 {
                     JobTitle = request.JobTitle,
                     JobDescription = request.JobDescription,
                     JobLocation = request.JobLocation,
                     CompanyName = request.CompanyName,
-                    DatePosted = DateTime.UtcNow // You might want to set the posting date
+                    DatePosted = DateTime.UtcNow
                 };
 
                 _dbContext.JobListingRequests.Add(newJobListing);
@@ -65,8 +63,7 @@ namespace budhtechjobapp.Data
                 };
             }
             catch (Exception ex)
-            {
-                // 4. Handle any exceptions and return an error response
+            {   
                 return new ResponseDto
                 {
                     IsSuccess = false,
@@ -77,8 +74,26 @@ namespace budhtechjobapp.Data
 
         private bool IsValid(JobListingRequest request)
         {
-            return true; 
+            return true;
         }
+
+        //search job
+        public async Task<List<JobListingRequest>> SearchJobListingsByTitleAsync(string jobTitle)
+        {
+            try
+            {
+                var jobListings = await _dbContext.JobListingRequests
+                    .Where(jl => jl.JobTitle == jobTitle)
+                    .ToListAsync();
+
+                return jobListings;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"An error occurred: {ex.Message}");
+            }
+        }
+
 
     }
 }

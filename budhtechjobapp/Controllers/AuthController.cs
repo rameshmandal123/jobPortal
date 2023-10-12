@@ -37,19 +37,29 @@ namespace budhtechjobapp.Controllers
         public async Task<IActionResult> Signin(SignInRequest request)
         {
             SignInResponse response = new SignInResponse();
+
             try
             {
-                await _authDL.SignInAsync(request);
-               
+                // Call your authentication logic to sign in and retrieve the response
+                response = await _authDL.SignInAsync(request);
+
+                if ((bool)response?.IsSuccess)
+                {
+                    response.Message = "Successfully login";
+                }
+                else
+                {
+                    // Handle the case where the sign-in was not successful
+                    return BadRequest(response);
+                }
             }
             catch (Exception ex)
             {
                 response.IsSuccess = false;
                 response.Message = ex.Message;
-
+                return BadRequest(response);
             }
-            response.IsSuccess = true;
-            response.Message = "Successfull";
+
             return Ok(response);
         }
 

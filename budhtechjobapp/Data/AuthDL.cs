@@ -6,11 +6,7 @@ using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Model;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using System.Data;
-using System.Diagnostics.Metrics;
-using System.Diagnostics;
-using System.Security.Principal;
-using System.Xml;
-using System;
+
 
 namespace budhtechjobapp.Data
 {
@@ -34,11 +30,14 @@ namespace budhtechjobapp.Data
                 var user = await _dbContext.SignupRequests
                     .Where(u => u.UserName == request.Username && u.Password == request.Password)
                     .FirstOrDefaultAsync();
+                
+                     response.Role = user?.Role;
 
                 if (user != null)
                 {
                     response.IsSuccess = true;
                     response.Message = "Login successful";
+                    response.Role = user?.Role;
                 }
                 else
                 {
@@ -60,26 +59,20 @@ namespace budhtechjobapp.Data
             response.Message = "Successfull";
             try
             {
-                if (!request.Password.Equals(request.ConformPassword))
-                {
-                    response.IsSuccess = false;
-                    response.Message = "Password Not matched";
-                }
-                else
-                {
+               
+               
                     // Create a new instance of SignupRequest and populate it with data
                     var user = new SignupRequest
                     {
                         UserName = request.UserName,
                         Password = request.Password,
-                        ConformPassword=request.ConformPassword,
                         Role = request.Role
                     };
 
                     // Add the user to the database
                     _dbContext.SignupRequests.Add(user);
                      await _dbContext.SaveChangesAsync();
-                }
+                
             }
             catch (DbUpdateException ex)
             {
@@ -92,7 +85,6 @@ namespace budhtechjobapp.Data
                 }
 
             }
-
             return response;
         }
     }

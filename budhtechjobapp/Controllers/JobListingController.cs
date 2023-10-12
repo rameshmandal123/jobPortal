@@ -40,28 +40,12 @@ namespace budhtechjobapp.Controllers
         public async Task<IActionResult> GetListOfJob()
         {
             try
-            {
+          {
                 // Retrieve the list of job listings asynchronously
                 var jobListings = await _jobListingDL.GetJobListingsAsync();
 
-                // Check if jobListings is not null or empty
-                if (jobListings != null && jobListings.Count > 0)
-                {
-                    return Ok(new ResponseDto
-                    {
-                        IsSuccess = true,
-                        Message = "Retrieved job listings successfully.",
+                return Ok(jobListings);
 
-                    });
-                }
-                else
-                {
-                    return NotFound(new ResponseDto
-                    {
-                        IsSuccess = false,
-                        Message = "No job listings found."
-                    });
-                }
             }
             catch (Exception ex)
             {
@@ -71,6 +55,32 @@ namespace budhtechjobapp.Controllers
                     Message = $"An error occurred: {ex.Message}"
                 });
             }
+
+
         }
+        //search job
+        [HttpGet("search")]
+        public async Task<IActionResult> SearchJobListingsByTitle(string jobTitle)
+        {
+            try
+            {
+                var jobListings = await _jobListingDL.SearchJobListingsByTitleAsync(jobTitle);
+
+                if (jobListings != null && jobListings.Any())
+                {
+                    return Ok(jobListings); // Return the list of matching job listings
+                }
+                else
+                {
+                    return NotFound("No job listings found with the specified JobTitle");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions and return an error response
+                return BadRequest($"An error occurred: {ex.Message}");
+            }
+        }
+
     }
 }

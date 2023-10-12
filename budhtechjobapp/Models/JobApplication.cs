@@ -14,15 +14,8 @@ namespace budhtechjobapp.Models
 
         public string? ApplicantEmail { get; set; }
 
-        public string? ResumeUrlFile { get; set; }
-
-        [ForeignKey("JobListing")]
-        public int JobListingId { get; set; }
-        public JobListingRequest? JobListing { get; set; }
-
-        [ForeignKey("Userid")]
-        public int SignupId { get; set; }
-        public SignupRequest? SignupRequest { get; set; }
+        public string? ApplicantLocation { get; set; }
+        public string? JobTitle { get; set; }
 
         public DateTime ApplyDate { get; set; }
 

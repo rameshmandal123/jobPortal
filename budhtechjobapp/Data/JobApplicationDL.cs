@@ -1,5 +1,6 @@
 ﻿using budhtechjobapp.DbConfigures;
 using budhtechjobapp.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace budhtechjobapp.Data
 {
@@ -31,10 +32,10 @@ namespace budhtechjobapp.Data
                 {
                     ApplicantName = jobApplication.ApplicantName,
                     ApplicantEmail = jobApplication.ApplicantEmail,
-                    //ResumeUrlFile = jobApplication.ResumeUrlFile,
+                    ApplicantLocation = jobApplication.ApplicantLocation,
+                    JobTitle = jobApplication.JobTitle,
                     ApplyDate = DateTime.UtcNow,
-                    JobListingId = jobApplication.JobListingId,
-                    SignupId = jobApplication.SignupId
+
                 };
 
                 _dbContext.JobTable.Add(newJobApplication);
@@ -56,9 +57,35 @@ namespace budhtechjobapp.Data
             }
         }
 
-        public Task<JobApplication> GetJobApplicationByIdAsync(int jobId)
+        public async Task<JobApplication> GetJobApplicationByIdAsync(int jobId)
         {
-            throw new NotImplementedException();
+            ResponseDto response = new ResponseDto();
+            try
+            {
+                var jobApplication = await _dbContext.JobTable
+                    .FirstOrDefaultAsync(ja => ja.Id == jobId);
+
+                return jobApplication;
+            }
+            catch (Exception ex)
+            {
+
+                return null;
+            }
+        }
+
+        public async Task<List<JobApplication>> GetJobApplicationsAsync()
+        {
+            try
+            {
+                var jobListings = await _dbContext.JobTable.ToListAsync();
+
+                return jobListings;
+            }
+            catch (Exception ex)
+            {
+                return new List<JobApplication>();
+            }
         }
 
         //chek valid

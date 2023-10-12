@@ -10,19 +10,21 @@ namespace budhtechjobapp.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int JobId {  get; set; }
 
-        [Required]
+        
         public string? JobTitle { get; set; }
 
-        [Required]
+        
         public string JobDescription { get; set; } = string.Empty;
 
-        [Required]
+        
         public string? JobLocation { get; set; }
 
-        [Required]
+        
         public string? CompanyName { get; set; }
 
         public DateTime DatePosted { get; set; }
+
+       // public ICollection<JobApplication>? JobApplications { get; set; }
     }
 
    

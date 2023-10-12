@@ -6,5 +6,6 @@ namespace budhtechjobapp.Data
     {
         public Task<ResponseDto> ApplyJobAsynch(JobApplication jobApplication);
         Task<JobApplication> GetJobApplicationByIdAsync(int jobId);
+        Task<List<JobApplication>> GetJobApplicationsAsync();
     }
 }

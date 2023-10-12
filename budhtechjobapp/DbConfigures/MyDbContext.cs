@@ -8,7 +8,7 @@ namespace budhtechjobapp.DbConfigures
         public MyDbContext(DbContextOptions<MyDbContext> options) : base(options)
         {
         }
-        // DbSet for SignupRequest
+        // DbSet for entity
         public DbSet<SignupRequest> SignupRequests { get; set; }
 
         public DbSet<JobListingRequest> JobListingRequests { get; set; }
@@ -31,7 +31,18 @@ namespace budhtechjobapp.DbConfigures
             modelBuilder.Entity<JobApplication>().HasKey(j => j.Id);
             modelBuilder.Entity<JobApplication>().ToTable("JobTable", schema: "public");
 
+            
+           /* modelBuilder.Entity<JobApplication>()
+                .HasOne(ja => ja.JobListing)       
+                .WithMany(jl => jl.JobApplications) // JobListing has many JobApplications
+                .HasForeignKey(ja => ja.JobListingId); // Foreign key is JobListingId
 
+            
+            modelBuilder.Entity<JobApplication>()
+                .HasOne(ja => ja.SignupRequest)    // JobApplication has one SignupRequest
+                .WithMany(sr => sr.JobApplications) // SignupRequest has many JobApplications
+                .HasForeignKey(ja => ja.SignupId);  // Foreign key is SignupId
+*/
         }
     }
 }

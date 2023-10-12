@@ -7,5 +7,8 @@ namespace budhtechjobapp.Data
         public Task<ResponseDto> JopPostAsynch(JobListingRequest request);
 
         Task<List<JobListingRequest>> GetJobListingsAsync();
+
+        Task<List<JobListingRequest>> SearchJobListingsByTitleAsync(string jobTitle);
     }
 }
+
